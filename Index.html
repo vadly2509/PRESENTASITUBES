@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementasi Editor Teks Menggunakan Struktur Data</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <!-- Font Awesome untuk ikon media sosial -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #1a2b4c;
+            --gold: #c3a343;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --primary: #2a3b5c;
+            --secondary: #c3a343;
+            --dark: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--navy);
+            scroll-behavior: smooth;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--primary) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero img {
+            width: 150px;
+            margin-top: 2rem;
+        }
+
+        /* Introduction Section */
+        .intro {
+            background: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Data Structures Section */
+        .data-structures {
+            background: var(--light-gray);
+        }
+
+        .diagram {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .diagram img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--white);
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        /* Biodata Pengembang Section */
+        .developer {
+            background: var(--white);
+            padding: 4rem 2rem;
+        }
+
+        .developer h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--navy);
+            text-align: center;
+        }
+
+        .developer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .developer-card {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .developer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        .developer-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 4px solid var(--gold);
+        }
+
+        .developer-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+        }
+
+        .developer-card p {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            margin: 0 0.5rem;
+            color: var(--navy);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--gold);
+        }
+
+
+        /* Q&A Section */
+        .qa {
+            background: var(--light-gray);
+            padding: 4rem 2rem;
+        }
+
+        .qa .question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .qa .answer {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Thank You Section */
+        .thank-you {
+            background: var(--white);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .thank-you h2 {
+            margin-bottom: 1rem;
+            color: var(--navy);
+        }
+
+        .thank-you p {
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--navy);
+            border-radius: 50%;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--gold);
+            transform: scale(1.3);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--navy);
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--navy);
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .code-snippet {
+            font-family: 'Consolas', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <div class="nav">
+        <div class="nav-dot active" data-section="hero"></div>
+        <div class="nav-dot" data-section="intro"></div>
+        <div class="nav-dot" data-section="data-structures"></div>
+        <div class="nav-dot" data-section="features"></div>
+        <div class="nav-dot" data-section="developer"></div>
+        <div class="nav-dot" data-section="testing"></div>
+        <div class="nav-dot" data-section="qa"></div>
+        <div class="nav-dot" data-section="thank-you"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+        <div class="container">
+            <h1 data-aos="fade-up">Editor Teks Sederhana</h1>
+            <img src="https://tinyjpg.com/backend/opt/output/4kn31t7jhh9r5813tn2ezz19t3z2891q/logo-telkom%20(2).png" alt="Logo Universitas" data-aos="zoom-in" data-aos-delay="400">
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="section intro" id="intro">
+        <div class="container">
+            <h2 data-aos="fade-up">Gambaran Proyek</h2>
+            <div class="grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Tujuan</h3>
+                    <p>Implementasi editor teks yang memanfaatkan struktur data canggih untuk manipulasi dan penyimpanan teks yang efisien.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Target</h3>
+                    <p>Membuat editor teks yang sepenuhnya berfungsi dengan kemampuan undo/redo, navigasi kursor, dan fungsi pencarian kata.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <h3>Implementasi Struktur</h3>
+                    <p>Menggunakan struktur data Stack dan Doubly Linked List untuk kinerja dan fungsionalitas optimal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Structures Section -->
+    <section class="section data-structures" id="data-structures">
+        <div class="container">
+            <h2 data-aos="fade-up">Implementasi Struktur Data</h2>
+            <div class="grid">
+                <div class="diagram" data-aos="fade-right">
+                    <h3>Implementasi Stack</h3>
+                    <img src="https://tinypng.com/backend/opt/download/e8v73w1ez273v68eevwmnbsj29r2aws9/download%20(2).png" alt="Diagram Stack">
+                </div>
+                <div class="diagram" data-aos="fade-left">
+                    <h3>Implementasi Doubly Linked List</h3>
+                    <img src="https://tinypng.com/backend/opt/download/n9119tk49vq9bg15vkhnemk5bap07e2z/1572846531580.png" alt="Diagram Doubly Linked List">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <h2 data-aos="fade-up">Fitur Utama</h2>
+            <div class="grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">⟲</div>
+                    <h3>Undo/Redo</h3>
+                    <p>Fungsi undo/redo lengkap menggunakan implementasi stack</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">↔</div>
+                    <h3>Navigasi Kursor</h3>
+                    <p>Pergerakan kursor yang efisien menggunakan doubly linked list</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Pencarian Kata</h3>
+                    <p>Fungsi pencarian kata cepat dengan algoritma yang dioptimalkan</p>
+                </div>
+                <!-- Fitur Tambahan -->
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon">📌</div>
+                    <h3>Pointer Line</h3>
+                    <p>Menunjuk ke baris tertentu dalam teks untuk navigasi yang lebih mudah</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-icon">➕</div>
+                    <h3>Penambah Karakter</h3>
+                    <p>Menambahkan karakter secara dinamis dengan antarmuka yang intuitif</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="700">
+                    <div class="feature-icon">📊</div>
+                    <h3>Hitung Karakter & Kata</h3>
+                    <p>Menghitung jumlah karakter dan kata dalam teks secara real-time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Biodata Pengembang Section -->
+    <section class="section developer" id="developer">
+        <div class="container">
+            <h2 data-aos="fade-up">Biodata Pengembang</h2>
+            <div class="developer-grid">
+                <!-- Vadly Card -->
+                <div class="developer-card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://media.licdn.com/dms/image/v2/D5603AQFibkVhjesCmA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1719029116106?e=1740009600&v=beta&t=I-7z4poCQJQIZvlL9hD-eOpccishJEXzDbombCdTd_4" alt="Vadly Aryu Septian">
+                    <h3>Vadly Aryu Septian</h3>
+                    <p>Mahasiswa Teknik Informatika dengan minat khusus pada pengembangan perangkat lunak dan struktur data.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/vadlyre/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/vadlyzz09/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/vadly2509" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Rifa Card -->
+                <div class="developer-card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://media.licdn.com/dms/image/v2/D5603AQHe8bhuNLDSlQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718265022767?e=1740009600&v=beta&t=WvC6zogSlucuEnwR7d1Huk8tFQmo61i6XAOCXJpRPcA" alt="Rifa Mayshakori">
+                    <h3>Rifa Mayshakori</h3>
+                    <p>Mahasiswa Teknik Informatika dengan keahlian dalam pengembangan web dan algoritma.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/rifamaysha/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/rifamayshakori" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Q&A Section -->
+    <section class="section qa" id="qa">
+        <div class="container">
+            <h2 data-aos="fade-up">FAQ</h2>
+            <div class="grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="question">Apa tantangan terbesar dalam proyek ini?</div>
+                    <div class="answer">Mengimplementasikan struktur data yang efisien untuk memastikan performa editor tetap optimal saat menangani teks yang besar.</div>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="question">Bagaimana cara kerja fitur undo/redo?</div>
+                    <div class="answer">Fitur undo/redo menggunakan struktur data stack untuk menyimpan tindakan pengguna, memungkinkan pengguna untuk membatalkan atau mengulangi tindakan tersebut secara berurutan.</div>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="question">Apakah editor ini mendukung kolaborasi real-time?</div>
+                    <div class="answer">Saat ini, editor ini fokus pada fungsi dasar dan belum mendukung kolaborasi real-time, namun ini merupakan fitur yang dapat ditambahkan di masa depan.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Thank You Section -->
+    <section class="section thank-you" id="thank-you">
+        <div class="container">
+            <h2 data-aos="fade-up">Terima Kasih</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Terima kasih telah mengunjungi presentasi proyek kami. Kami berharap editor teks ini dapat bermanfaat dan memenuhi kebutuhan Anda. Untuk informasi lebih lanjut atau kerjasama, jangan ragu untuk menghubungi kami.</p>
+            <div data-aos="fade-up" data-aos-delay="400">
+                <a href="#hero" class="nav-dot active" style="display:inline-block; width:100px; padding:1rem; background:var(--gold); color:#fff; border-radius:5px; text-decoration:none;">Kembali ke Atas</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Navigation dots functionality
+        const sections = document.querySelectorAll('.section');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.dataset.section === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll functionality
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const targetSection = document.getElementById(dot.dataset.section);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
